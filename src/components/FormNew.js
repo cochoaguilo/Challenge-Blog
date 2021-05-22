@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Header from "./Header";
+import '../css/form.css'
 
 const FormNew = () => {
   const [data, saveData] = useState({
@@ -23,7 +24,10 @@ const FormNew = () => {
       return;
     }
 
-    fetch('https://jsonplaceholder.typicode.com/posts')
+    fetch('https://jsonplaceholder.typicode.com/posts',{
+      method: 'POST',
+      body: data
+    })
     window.location.reload();
   };
 
@@ -31,20 +35,28 @@ const FormNew = () => {
     <div>
       <Header />
       <form onSubmit={onSubmit}>
-        <label htmlFor="content">Titulo</label>
+        <div className="mb-3">
+        <label htmlFor="content" className='form-label'>Titulo</label>
         <input
           type="text"
           onChange={onChange}
           name="title"
           value={title}
+          className="form-control"
         ></input>
-        <label htmlFor="title">Contenido</label>
+        </div>
+        <div >
+        <label htmlFor="title" className='form-label'>Contenido</label>
         <input
           type="text"
           onChange={onChange}
           name="content"
           value={content}
+          className="form-control"
+          id="input-content"
         ></input>
+        </div>
+        <button type='submit' className="btn btn-primary">Submit</button>
       </form>
     </div>
   );

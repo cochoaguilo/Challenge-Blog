@@ -1,39 +1,34 @@
-import React, { Component } from 'react';
+import React, { useEffect,useState } from 'react';
 import Header from './Header'
+import ListadoBlogs from './ListadoBlogs'
 
-class Home extends Component (){
-    constructor(props){
-        super(props)
+const Home = ()=>{
+    
+    const [blogs, saveBlogs] = useState([])
 
-        this.state ={
-            blogs: []
+     useEffect (()=>{
+        const apiGET = async ()=>{
+            let res = await fetch('https://jsonplaceholder.typicode.com/posts')
+            let json = await res.json()
+            
+                console.log(json);
+                saveBlogs(json)
+        
         }
-    }
+        
+        apiGET()
+    }, [])
 
-    componentDidMount(){
-        fetch('https://jsonplaceholder.typicode.com/posts')
-        .then(res => res.json())
-        .then(json =>{
-            console.log(json);
-            this.setState({
-                blogs: json
-            })
-        })
-    }
-
-    render(){
+    
 
         return(
-            <body>
+            <div>
             <Header />
-            <ul>
-                {this.state.blogs.map(blog=>{
-                    <li>{blog}</li>
-                })}
-            </ul>
-            </body>
+            <ListadoBlogs blogs = {blogs}/>
+            
+            </div>
         )
-    }
+    
 }
 
 export default Home;

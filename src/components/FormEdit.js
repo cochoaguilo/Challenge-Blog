@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
 import Header from './Header'
+import '../css/form.css'
 
-
-const ModalEdit = (props) => {
+const FormEdit = (props) => {
     
-  
+  const { title, content, id} =  props.location.state;
     const [data, saveData] = useState({
-        title: "",
-        content: "",
+        title: title,
+        content: content,
       });
   
-    const { title, content} = data;
+   
     
     const onChange = (e) => {
       saveData({
@@ -18,6 +18,7 @@ const ModalEdit = (props) => {
         [e.target.name]: e.target.value,
       });
     };
+    
     const onSubmit = (e) => {
       e.preventDefault();
   
@@ -27,7 +28,10 @@ const ModalEdit = (props) => {
         return;
       }
   
-      fetch('https://jsonplaceholder.typicode.com/posts')
+      fetch('https://jsonplaceholder.typicode.com/posts/'+id,{
+        method: 'PUT',
+        body: data
+      })
   
       
       window.location.reload();
@@ -37,23 +41,32 @@ const ModalEdit = (props) => {
         <div>
         <Header />
         <form onSubmit={onSubmit}>
-          <label htmlFor="content">Titulo</label>
+          <div>
+          <label htmlFor="title" className='form-label'>Titulo</label>
           <input
             type="text"
             onChange={onChange}
             name="title"
-            value={content}
+            defaultValue={title}
+            className="form-control"
           ></input>
-          <label htmlFor="title">Contenido</label>
+          </div>
+          <div>
+          <label htmlFor="content" className='form-label'>Contenido</label>
           <input
             type="text"
             onChange={onChange}
             name="content"
-            value={title}
+            defaultValue={content}
+            className="form-control"
+            id="input-content"
           ></input>
+          </div>
+
+          <button type='submit' className="btn btn-primary">Submit</button>
         </form>
       </div>
     );
   };
   
-  export default ModalEdit;
+  export default FormEdit;
